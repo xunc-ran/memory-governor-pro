@@ -1,0 +1,68 @@
+{
+  "agentId": "main",
+  "timezone": "Asia/Shanghai",
+  "workspaceRoot": "workspace",
+  "sessionsRoot": "agents/{AGENT_ID}/sessions",
+  "openclawConfigPath": "openclaw.json",
+  "stateDir": "skills/memory-governor-pro/state/{AGENT_ID}",
+  "archiveRoot": "agents/{AGENT_ID}/sessions/archive",
+  "archiveRetentionDays": 30,
+  "selfImprovingRoot": "workspace",
+  "preRefineSessionSnapshot": false,
+  "internalScheduler": {
+    "enabled": true,
+    "runAtLocalTime": "00:05",
+    "tickIntervalMs": 60000,
+    "jitterMaxMs": 90000,
+    "quietMsAfterSessionWrite": 180000,
+    "postTurnQuietMs": 120000,
+    "maxDeferMs": 7200000,
+    "catchUpOutsideRunWindow": true,
+    "catchUpOnStartup": true,
+    "catchUpMaxDays": 7,
+    "downtimeRecoveryMaxDays": 365,
+    "lockStaleMs": 300000,
+    "runGovernanceAfterSuccess": false,
+    "openclawCleanup": false,
+    "openclawBin": "openclaw",
+    "firstInstallBackfillEnabled": true,
+    "firstInstallBackfillMaxDays": 365
+  },
+  "contextFlush": {
+    "enabled": true,
+    "singleThresholdPercent": 82,
+    "preemptMarginPercent": 3,
+    "pollIntervalMs": 15000,
+    "minFlushIntervalMs": 300000,
+    "contextWindowTokens": 128000,
+    "query": "近期决策与硬约束"
+  },
+  "scheduler": {
+    "cron": "0 0 * * *",
+    "thresholds": [50, 70, 85]
+  },
+  "injection": {
+    "format": "toon",
+    "fallback": "json",
+    "singleInjectorRequired": true,
+    "topK": 3,
+    "maxChars": 2800
+  },
+  "lancedb": {
+    "dbPath": "memory/lancedb-governor/{AGENT_ID}",
+    "tableName": "memories",
+    "embeddingDimensions": 1024
+  },
+  "rotation": {
+    "mode": "rewrite",
+    "allowPermanentDelete": false,
+    "allowBootstrapDelete": true,
+    "mergeRetainedIntoLatestSession": true
+  },
+  "governance": {
+    "hotDays": 30,
+    "warmDays": 180,
+    "retireDays": 365,
+    "excludeAgentOnlyDayFromAging": true
+  }
+}
